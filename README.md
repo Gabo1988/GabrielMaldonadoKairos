@@ -93,6 +93,7 @@ The use cases used for testing are as follows:
 - /prices/2024-02-16 21:00:00,35455,1
 
 
+# Classes
 ## PricesController
 
 The `PricesController` class is a REST controller that handles requests related to prices. It provides an access point to query prices using the `/prices` route.
