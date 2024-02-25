@@ -1,5 +1,98 @@
 # README
 
+# Price Query Project
+
+This project exposes an endpoint that allows querying the database of an e-commerce platform.
+
+## Technologies Used
+
+- In-memory database (H2 type).
+- Spring Boot.
+
+## Database Schema
+
+The project uses an in-memory H2 database with a pre-loaded table. The fields handled in the table are as follows:
+
+| Field      | Description                                                                                      |
+|------------|--------------------------------------------------------------------------------------------------|
+| BRAND_ID   | Foreign key of the group chain.                                                                  |
+| START_DATE | Start date of the price tariff validity range.                                                    |
+| END_DATE   | End date of the price tariff validity range.                                                      |
+| PRICE_LIST | Identifier of the applicable price tariff.                                                        |
+| PRODUCT_ID | Product identifier.                                                                              |
+| PRIORITY   | Price application disambiguator. If two tariffs overlap in a date range, the one with the highest priority (highest numeric value) is applied. |
+| PRICE      | Final sale price.                                                                                |
+| CURR       | Currency ISO.                                                                                    |
+
+## Example Data
+
+The database table contains the following records:
+
+| BrandId | Start_Date          | End_Date            | Price_List | ProductId | Priority | Price | Curr | Last_Update          | Last_Update_By |
+|---------|---------------------|---------------------|------------|-----------|----------|-------|------|----------------------|----------------|
+| 1       | 2024-02-14 00:00:00 | 2024-02-14 15:00:00 | 1          | 35455     | 0        | 35.5  | EUR  | 2024-02-14 10:00:00  | user1          |
+| 1       | 2024-02-14 15:30:00 | 2024-02-14 18:30:00 | 2          | 35455     | 1        | 25.45 | EUR  | 2024-02-14 16:00:00  | user1          |
+| 1       | 2024-02-14 17:00:00 | 2024-02-15 05:00:00 | 3          | 35455     | 1        | 30.5  | EUR  | 2024-02-14 21:00:00  | user2          |
+| 1       | 2024-02-15 09:00:00 | 2024-02-15 23:59:59 | 4          | 35455     | 1        | 38.95 | EUR  | 2024-02-15 10:00:00  | user1          |
+| 1       | 2024-02-16 11:00:00 | 2024-02-16 23:59:59 | 5          | 35455     | 1        | 40.95 | EUR  | 2024-02-16 21:00:00  | user1          |
+
+## Exposed Endpoint
+
+The exposed endpoint is as follows:
+
+GET /prices/{key}
+
+markdown
+Copy code
+
+Where `key` is a field composed of:
+
+- Application date.
+- Product identifier.
+- Chain identifier.
+
+### Example Usage of the Endpoint
+
+Example request:
+
+GET /prices/2024-02-14 10:00:00,35455,1
+
+diff
+Copy code
+
+The response returned by this endpoint is as follows:
+
+- Product identifier.
+- Chain identifier.
+- Tariff to apply.
+- Application dates.
+- Final price to apply.
+
+Example response:
+
+{
+"productId": "35455",
+"brandId": "1",
+"priceList": "2",
+"startDate": "2024-02-14T21:30:00.000+00:00",
+"endDate": "2024-02-15T00:30:00.000+00:00",
+"price": 25.45
+}
+
+javascript
+Copy code
+
+## Use Cases
+
+The use cases used for testing are as follows:
+
+- /prices/2024-02-14 10:00:00,35455,1
+- /prices/2024-02-14 16:00:00,35455,1
+- /prices/2024-02-14 21:00:00,35455,1
+- /prices/2024-02-15 10:00:00,35455,1
+- /prices/2024-02-16 21:00:00,35455,1
+
+
 ## PricesController
 
 The `PricesController` class is a REST controller that handles requests related to prices. It provides an access point to query prices using the `/prices` route.
