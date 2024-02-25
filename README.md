@@ -40,7 +40,7 @@ The database table contains the following records:
 
 The exposed endpoint is as follows:
 
-GET /prices/{key}
+### GET /prices/{key}
 
 markdown
 Copy code
