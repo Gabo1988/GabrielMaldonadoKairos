@@ -42,9 +42,6 @@ The exposed endpoint is as follows:
 
 #### GET /prices/{key}
 
-markdown
-Copy code
-
 Where `key` is a field composed of:
 
 - Application date.
