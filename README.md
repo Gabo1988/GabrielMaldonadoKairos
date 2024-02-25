@@ -57,9 +57,6 @@ Example request:
 
 GET /prices/2024-02-14 10:00:00,35455,1
 
-diff
-Copy code
-
 The response returned by this endpoint is as follows:
 
 - Product identifier.
@@ -78,9 +75,6 @@ Example response:
 "endDate": "2024-02-15T00:30:00.000+00:00",
 "price": 25.45
 }
-
-javascript
-Copy code
 
 ## Use Cases
 
